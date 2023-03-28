@@ -15,34 +15,23 @@ services:
       AWS_ENDPOINT_PROTO: "http"
       # NOTIFICATION_URLS: "smtp://${SMTP_USERNAME}:${SMTP_PASSWORD}@${SMTP_HOST}:${SMTP_PORT}/?fromAddress=${SMTP_FROM}&toAddresses=${TO_SENT_EMAIL}"
       NOTIFICATION_URLS: "telegram://${TELEGRAM_TOKEN}@telegram?chats=${TELEGRAM_USER_ID}"
-      NOTIFICATION_LEVEL: "info"
+      # NOTIFICATION_LEVEL: "info"
       BACKUP_STOP_CONTAINER_LABEL: stopservice
     restart: unless-stopped
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+      - backup:/backup/
       - transmission:/backup/transmission:ro
-      - mongodata:/backup/mongo:ro
-      - nextcloud_db:/backup/nextcloud_db:ro
-      - vaultwarden_mariadb_vol:/backup/vaultwarden_mariadb_vol:ro
       - vaultwarden_vaultwarden:/backup/vaultwarden:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
 volumes:
+  backup:
+    name: backup
+
   transmission:
     name: transmission_transmission
-    external: true
-
-  mongodata:
-    name: mongodata
-    external: true
-
-  nextcloud_db:
-    name: nextcloud_db
-    external: true
-
-  vaultwarden_mariadb_vol:
-    name: vaultwarden_mariadb_vol
     external: true
 
   vaultwarden_vaultwarden:
